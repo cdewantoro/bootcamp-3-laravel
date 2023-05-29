@@ -39,17 +39,25 @@
         }else{
             echo "ERROR:".mysqli_error($koneksi);
         }
-    }elseif($_GET['delete']){
+    }elseif($_GET['edit']){
+        $id_edit = $_GET['edit'];
+        $edit = mysqli_query($koneksi,  "UPDATE FROM buku SET editJudul='$judul', editTema='$tema' WHERE id='$id_edit'");
+
+        if($edit){
+            get_buku();
+        }else{
+            echo "ERROR:".mysqli_error($koneksi);
+        }
+    }else($_GET['delete']){
         $id_hapus = $_GET['delete'];
         $hapus = mysqli_query($koneksi,  "DELETE FROM buku WHERE id=$id_hapus");
-
         if($hapus){
             get_buku();
         }else{
             echo "ERROR:".mysqli_error($koneksi);
         }
-    }
-
+     }
+   
 ?>
 
 <!doctype html>
@@ -75,6 +83,12 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
     <title>Buku</title>
+    <script>
+      function editBuku(ed_jud,ed_tema) {
+        $("#editJudul").attr("value",ed_jud);
+        $("#editTema").attr("value",ed_tema);
+      }
+    </script>
   </head>
   <body>
 
@@ -103,7 +117,7 @@
       <td id="judul_<?= $row['id']?>"><?= $row['judul'] ?></td>
       <td id="tema_<?= $row['id']?>"><?= $row['tema'] ?></td>
       <td>
-            <a href="?edit=<?= $row['id']?>" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#edit"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="?edit=<?= $row['id']?>" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#edit" onclick="editBuku('<?= $row['judul']?>','<?=$row['tema']?>');"><i class="fa-solid fa-pen-to-square"></i></a>
             <a href="?delete=<?= $row['id']?>" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
        </td>
 
@@ -126,18 +140,17 @@
       </div>
       <div class="modal-body">
         <form method="post">
-      <div class="mb-3">
-        <label for="judul" class="form-label">Judul</label>
-        <input type="text" class="form-control" id="judul" name="judul">
-        </div>
-        <div class="mb-3">
-        <label for="judul" class="form-label">Tema</label>
-        <input type="text" class="form-control" id="tema" name="tema">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-
-</form>
+          <div class="mb-3">
+            <label for="judul" class="form-label">Judul</label>
+            <input type="text" class="form-control" id="judul" name="judul">
+            </div>
+            <div class="mb-3">
+            <label for="judul" class="form-label">Tema</label>
+            <input type="text" class="form-control" id="tema" name="tema">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+      </form>
     </div>
   </div>
 </div>
@@ -155,11 +168,11 @@
       <div class="mb-3">
 
         <label for="judul" class="form-label">Judul</label>
-        <input type="text" class="form-control" id="judul" name="judul" placeholder="">
+        <input type="text" class="form-control" id="editJudul" name="judul">
         </div>
         <div class="mb-3">
         <label for="judul" class="form-label">Tema</label>
-        <input type="text" class="form-control" id="tema" name="tema">
+        <input type="text" class="form-control" id="editTema" name="tema">
         </div>
 
         <button type="submit" class="btn btn-primary">Submit</button>
