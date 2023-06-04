@@ -48,7 +48,7 @@
         }else{
             echo "ERROR:".mysqli_error($koneksi);
         }
-    }else($_GET['delete']){
+    }elseif($_GET['delete']){
         $id_hapus = $_GET['delete'];
         $hapus = mysqli_query($koneksi,  "DELETE FROM buku WHERE id=$id_hapus");
         if($hapus){
@@ -84,7 +84,8 @@
 
     <title>Buku</title>
     <script>
-      function editBuku(ed_jud,ed_tema) {
+      function editBuku(ed_ID,ed_jud,ed_tema) {
+        $("#editID").attr("value",ed_ID)
         $("#editJudul").attr("value",ed_jud);
         $("#editTema").attr("value",ed_tema);
       }
@@ -117,7 +118,7 @@
       <td id="judul_<?= $row['id']?>"><?= $row['judul'] ?></td>
       <td id="tema_<?= $row['id']?>"><?= $row['tema'] ?></td>
       <td>
-            <a href="?edit=<?= $row['id']?>" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#edit" onclick="editBuku('<?= $row['judul']?>','<?=$row['tema']?>');"><i class="fa-solid fa-pen-to-square"></i></a>
+            <a href="?edit=<?= $row['id']?>" class="btn btn-success"data-bs-toggle="modal" data-bs-target="#edit" onclick="editBuku('<?=$row['id']?>','<?= $row['judul']?>','<?=$row['tema']?>');"><i class="fa-solid fa-pen-to-square"></i></a>
             <a href="?delete=<?= $row['id']?>" class="btn btn-danger"><i class="fa-solid fa-trash-can"></i></a>
        </td>
 
@@ -166,7 +167,7 @@
       <div class="modal-body">
         <form method="post">
       <div class="mb-3">
-
+      <input type="hidden" name="editID" id="editID">
         <label for="judul" class="form-label">Judul</label>
         <input type="text" class="form-control" id="editJudul" name="judul">
         </div>
