@@ -1,32 +1,7 @@
 <?php
-    // MYSQL
-    $host = "localhost";
-    $user = "root";
-    $pass = "";
-    $DB = "latihan";
 
-    $koneksi = mysqli_connect($host,$user,$pass,$DB);
-
-
-    if(isset($_GET['judul'])) {
-        $judul = $_GET['judul'];
-        $id= $_GET['id'];
-        $hasil = mysqli_query($koneksi, "SELECT * FROM latihan_crud WHERE id=$id");
-
-        while($row = mysqli_fetch_assoc($hasil)) {
-            $nama = $row['nama'];
-            $buku = $row['buku'];
-            $tema = $row['tema'];
-            $email = $row['email'];
-        }
-
-    }else {
-        $judul = "Tambah";
-        $nama = '';
-        $buku = '';
-        $tema = '';
-        $email = '';
-    }
+    require_once "connection.php";
+    require_once "acccess.php";
 
 ?>
 
@@ -45,10 +20,10 @@
 
 <body>
     <div class="container pt-4" style="padding-right: 40%">
-            <a href="oop_crud.php">Kembali</a>
+            <a href="crud.php">Kembali</a>
             <h1><i class="fa-solid fa-book"></i><?= $judul ?> Buku</h1>
         <br><br>
-        <form action="oop_crud.php?judul=<?= $judul ?>&edit=<?= $id?>" method="post">
+        <form action="crud.php?judul=<?= $judul ?>&edit=<?= $id?>" method="post">
             <div class="mb-3 row">
                 <label for="nama" class="form-label">Nama</label><input type="text" class="form-control" id="nama" name="nama" value="<?= $nama ?>">
              </div>
